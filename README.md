@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 https://docs.google.com/document/d/1rC1hZ2WyYVahVB7LNRcoLa2nxcttWBLRWLjaD2Fr2QE/edit?usp=sharing
@@ -105,6 +106,10 @@ semanage port -a -t http_port_t -p tcp 8008
 
 
 ```
+=======
+# KSD
+Kinase substrate database
+>>>>>>> ec8062e107c14afe9ff68e6a5ea57c0ed8231fff
 =======
 # KSD
 Kinase substrate database
