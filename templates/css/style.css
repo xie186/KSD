@@ -1,0 +1,82 @@
+html, body {
+  height: 100%;
+}
+body {
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1 0 auto;
+}
+
+footer{
+    color:#FFF;
+}
+
+/* https://stackoverflow.com/questions/38202925/how-to-hide-bootstrap-slider-and-all-image-should-be-display-vertically-on-mobil */
+@media (max-width: 767px) {
+  .carousel .item {
+    display: block;
+    margin-top: 12px;
+  }
+  .carousel-control, 
+  .carousel-indicators {
+    display: none;
+  }
+}
+/* Make the images wide and responsive. */
+
+.carousel-inner > .item > img {
+   width: 100%// width:1280px;
+   height: auto//height:360px;
+}
+/* 
+
+#fix-pos{
+    position:fixed;
+}
+body{
+  padding-top: 80px; 
+  min-height=400px;
+  margin-bottom: 100px;
+}
+
+footer{
+    color:#FFF;
+    max-height: 70px
+    padding: 5px;
+    position: relative;
+    bottom: 0;
+}
+
+.container{
+     overflow: auto; 
+    word-wrap: break-word;
+}
+
+*/
+
+.pearDB_boxstyle{
+    border: 1px solid;
+    border-radius: 8px;	
+    color: inherit;
+    box-shadow: 1px 1px 1px #888888;
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+    margin-bottom: 5px;
+}
+
+.pearDB_sourcebox{
+    min-height: 10px;
+    padding: 15px;
+    position: relative;
+/*  float: left;  */
+    min-height: 210px;
+}
+
+.pearDB_sourcebox_outpadds{
+/*  padding: 8px; */
+    padding-bottom: 5px;
+    padding-top: 5px;
+}

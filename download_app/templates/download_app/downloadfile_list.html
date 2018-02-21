@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body_block %}
+  <!--div class="jumbotron"-->
+
+    <h1>Welcome to the Download Page!</h1>
+      <!--
+      filename = models.CharField(max_length=256, primary_key=True)
+     filedescription = models.CharField(max_length=256)
+     slug = models.SlugField()
+
+      -->
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">File</th>
+              <th scope="col">Description</th>
+              <th scope="col">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for file in downloadfile_list %}
+              <tr>
+                <td>{{file.name}}</th>
+                <td>{{file.description}}</td>
+                <td>
+                  <a class="btn btn-lg btn-primary" href="/download_app/download/{{file.slug}}" role="button">Download</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+       </table>
+
+  <!--/div-->
+
+
+{% endblock %}

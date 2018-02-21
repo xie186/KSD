@@ -1,0 +1,5 @@
+{{ object.gene_id }}
+{{ object.best_ara }}
+{{ object.function_des }}
+
+

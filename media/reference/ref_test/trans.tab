@@ -1,0 +1,4 @@
+trans1.1	gene1	chr1:2000-3000 +	ATCGCG	DSUFHSIUEF
+trans1.2        gene1   chr1:2010-3000 +        ATCACG  DSUFHSIUEFH
+trans2.1        gene2   chr2:4000-5000 -        ATCGCG  DSUFHSIUEF
+trans2.2        gene2   chr2:4010-5000 -        ATCACG  DSUFHSIUEFH

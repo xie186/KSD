@@ -1,0 +1,12 @@
+project 1	gene1	leaf	200
+project 1	gene1	root	400
+project 1	gene1	embryo	500
+project 1	gene2	leaf	200
+project 1	gene2	root	400
+project 1	gene2	embryo	500
+project 2	gene1	Ctrl	200
+project 2	gene1	Pathogen1	400
+project 2	gene1	Pathogen2	500
+project 2	gene2	Ctrl	200
+project 2	gene2	Pathogen1	400
+project 2	gene2	Pathogen2	500

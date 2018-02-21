@@ -1,0 +1,2 @@
+project-detail	project_detail.tab.gz	all the details about project
+GO-detail	GO.tab.gz	GO details

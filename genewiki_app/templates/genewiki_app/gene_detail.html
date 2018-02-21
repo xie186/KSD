@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+  <div class="container-fluid">
+   <div class="row">
+       <div class="col-xs-3 pearDB_boxstyle pearDB_sourcebox">
+           
+       </div>
+       <div class="col-xs-9" id="mygene" value="{{gene.geneid}}">
+          <h3 id="gene_name"><strong>{{gene.geneid}}'s detailed information</strong></h3>
+           
+               <!--<h2><li><a href="{{school.id}}/">{{gene}}</a></li></h2> -->
+               <div class="well well-sm"><strong>Location information</strong></div>
+
+                 <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">GeneID</th>
+                      <th scope="col">Coordnate</th>
+                      <th scope="col">Strand</th>
+                      <th scope="col">BestAraHit</th>
+                      <th scope="col">Function Descriotion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{gene.geneid}}</th>
+                      <td>{{gene.coordinate}}</td>
+                      <td>{{gene.strand}}</td>
+                      <td>{{gene.best_ara}}</td>
+                      <th>{{gene.function_des}}</th>
+                    </tr>
+                  </tbody>
+               </table>
+          
+            <div class="well well-sm"><strong>Gene ontology information</strong></div>
+            <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Accession</th>
+                      <th scope="col">Name space</th>
+                      <th scope="col">Function description</th>
+                      <!--<th scope="col">Gene</th> -->
+                    </tr>
+                  </thead>
+               <tbody>
+                 {% for go_item in go_list %}
+                   <tr>
+                     <td>{{go_item.accession}}</td>
+                     <td>{{go_item.namespace}}</td>
+                     <td>{{go_item.description}}</td>
+                     <!--<td>{{go_item.gene.best_ara}}</td> -->
+                  </tr>
+                 {% endfor%}
+               </tbody>
+            </table>
+         <div class="well well-sm"><strong>Expression Database</strong>
+           <select id="project-select"  class="selectpicker" data-live-search="true">
+           <!--option value="" hidden >Example Placeholder</option-->
+	    {%for project in project_list %}
+              <option value="/genewiki_app/api/expdb/{{gene.geneid}}/{{project.slug}}/">{{ project }}</option>
+            {% endfor %}
+           </select>
+         </div>
+     
+         <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sample</th>
+                      <th scope="col">FPKM</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expBody">
+                  </tbody>
+          </table>
+          <canvas id="myChart" width="500" height="300"></canvas>
+          <!--a HREF="#" id="canvas_link">Save to image</a-->
+       </div>
+   </div>
+  </div>
+
+{% endblock %}
+
+{% block js_block %}
+<script>
+
+  $(document).ready(function(){
+    var pro_gene = $("#project-select").val()
+    $.ajax({
+        url: pro_gene,
+        data: {},
+        dataType:'json',
+        success: function(data){
+	    console.log("Ready")
+            var exptab = '';
+            var chart_label = [];
+            var chart_data = [];
+            $.each(data, function(key, value){
+              exptab += '<tr>';
+              exptab += '<td>'+value.sample+'</td>';
+              exptab += '<td>'+value.fpkm+'</td>';
+              exptab += '</tr>';
+              chart_label.push(value.sample);
+	      chart_data.push(value.fpkm);
+            });
+            $('#expBody').html(exptab);
+            console.log(chart_label);
+            console.log(chart_data);
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: chart_label,
+                    datasets: [{
+                        data: chart_data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Sample'
+                            },
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'FPKM'
+                            },
+                        }],
+                    },
+                    title: {
+                        display: true,
+                        text: 'Bar plot of expression values'
+                    },
+                    legend: {
+                       display: false,
+                    }
+                }
+            });
+            //var url1=document.getElementById("myChart").toDataURL("image/jpeg");
+            //document.getElementById("canvas_link").href=url1;
+        }
+    }); 
+  });
+
+  $("#project-select").change(function (){
+    var pro_gene = $(this).val();
+      $.ajax({
+        url: pro_gene,
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+            //alert("A user with this username already exists.");
+	    console.log("select")
+            var exptab = '';
+            var chart_label = [];
+            var chart_data = [];
+	    $.each(data, function(key, value){
+              exptab += '<tr>';
+              exptab += '<td>'+value.sample+'</td>';
+              exptab += '<td>'+value.fpkm+'</td>';
+	      exptab += '</tr>';
+              chart_label.push(value.sample);	
+	      chart_data.push(value.fpkm)
+            });
+            $('#expBody').html(exptab);
+
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: chart_label,
+                    datasets: [{
+                        data: chart_data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Sample'
+                            },
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }],
+			xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'FPKM'
+                            },
+                        }],
+                    },
+	            title: {
+                        display: true,
+                        text: 'Bar plot of expression values'
+                    },
+	            legend: {
+                       display: false,
+                    },
+                }
+            });
+//
+        }
+      });
+  });
+
+  
+</script>
+{% endblock %}
